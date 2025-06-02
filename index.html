@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="author" content="Hosaena Tilahun">
+    <meta charset="utf-8">
+    <meta name="author" content="Hosaena Tilahun">
     <meta name="description" content="Mapping Resource Extraction in Oromia">
+    <title>Exploring Key Resource Extraction Sites in Oromia and Southern States</title>
 </head>
+    
 <body>
-    <h1>Resource Extraction in Oromia, Ethiopia since 2014</h1>
     <!-- Leaflet is a JavaScript library that helps code web maps. Using their library I have imported
         the following style sheets to help build the foundational design for the map. -->
-   
+
     <!-- Style sheet for Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
    
@@ -75,54 +76,51 @@ margin: 0;
             box-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
     </style>
-
 </head>
 
 <body>
-    <!-- Page layout: map on top, text below -->
+    <div id="loading" class="loading-message">Loading map...</div>
     <div id="map"></div>
     <div id="text_area">
-        <h3>Resource Extraction Sites in Oromia, Ethiopia (2014-Present)</h3>
-        <h5>By Hosaena Tilahun for Professor Lydia Jenning's course Resource Extraction and Indigenous Land Management</h5>
-        <p>This interactive map displays locations of resource extraction, including mining, land theft, and oil/as within Oromia, Ethiopia.
-       Clicking on a marker will display information about the extraction site, like the type of resource,
-        operational status, and a brief description.</p>
+        <h3>Exploring Key Resource Extraction Sites in Oromia and Southern States</h3>
+        <h5>By Hosaena Tilahun, 23Spring Term</h5>
+        <p>This interactive map displays locations of resource extraction, including mining, land appropriation, and oil/gas extraction within Oromia and surrounding regions of Ethiopia. Click on a marker to display detailed information about each extraction site, including the type of resource, operational status, and impacts on local communities.</p>
     </div>
 
-    <script>  
+    <!-- Leaflet JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    
+    <!-- Leaflet Geocoder JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-control-geocoder/2.4.0/Control.Geocoder.min.js"></script>
 
-        // Create the map centered on Ethiopia/Oromia region
+    <script>
+        // Hide loading message once scripts are loaded
+        document.getElementById('loading').style.display = 'none';
+        
+        // Initialize the map centered on Oromia region
         var map = L.map('map', {
-            zoom: 7,
+            zoom: 6,
             center: [8.5, 39.5], // Centered on Oromia region
+            zoomControl: true
         });
 
-        // Base tile layers
+        // Base tile layer
         var openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 18
         });
 
-        // Sample resource extraction locations in Oromia
+        // Resource extraction data
         var resourceSites = [
             {
-                name: "This is a template code of how I categorized my research data",
-                coords: [9.16, 39.46],
-                type: "mining/agriculture/oil",
-                resource: "Natural/Raw Resource",
-                status: "Active/Inactive/Complete",
-                operator: "Corporation",
-                yearStarted: 2024,
-                description: "Add description here"
-            },
-            {
-                name: "Shakiso Gold Mine",
-                coords: [5.75, 39.05],
-                type: "mining",
-                resource: "Gold",
+                name: "Oil Extraction in Ogaden Basin",
+                coords: [8.0, 43.5], // Adjusted coordinates for Ogaden Basin
+                type: "oil",
+                resource: "Crude Oil",
                 status: "Active",
-                operator: "MIDROC Gold Mine",
-                yearStarted: 2001,
-                description: "Large-scale gold mining operation in southern Oromia"
+                operator: "Federal government with Chinese oil extraction company Poly-GCL Petroleum Investment Limited",
+                yearStarted: 2018,
+                description: "Oil exploration and extraction in the Ogaden Basin. The Rift Valley Institute reports that attempts by the federal government to access peripheral resources are bound up in long histories of violence and dispossession, raising concerns about community displacement and environmental impact."
             },
             {
                 name: "Lega Dembi Gold Mine",
@@ -132,57 +130,37 @@ margin: 0;
                 status: "Active",
                 operator: "MIDROC Gold Mine",
                 yearStarted: 1998,
-                description: "One of Ethiopia's largest gold mines"
+                description: "One of Ethiopia's largest gold mines, located in Shakiso, Oromia. Formerly state-owned, sold to MIDROC in 1997. The mine has contributed to long-term cyanide and mercury pollution in local water reservoirs, causing health complications including birth defects, miscarriages, and chronic illness among local residents. Aida, a mother that lives 5 minutes away from the Lega Dembi suffered from a series of miscarriages, while her husband struggled with joint pain and chronic fatigue. Their children have also suffered from vision impairement as a result of consuming contaminated water poisoned by MIDROC."
             },
             {
-                name: "Sheboka Tribe (Corporate Land Theft)",
-                coords: [9.01, 37.2],
+                name: "Karuturi Agro Land Appropriation",
+                coords: [8.13, 37.01], // Adjusted coordinates
                 type: "agriculture",
-                resource: "land expansion/corporate capture",
-                status: "Complete but under inspection by federal government",
+                resource: "Agricultural Land",
+                status: "Completed/Failed",
                 operator: "Karuturi Agro Products PLC",
                 yearStarted: 2014,
-                description: "Large scale agricultural land agreement between the federal government, and this Indian-based corporation. Company had overall low agricultural production, often underperforming indigenous farmers, leading the government to believe land was transfered for value as opposed to efficiently support farming"
+                description: "Large-scale agricultural land lease that ultimately failed due to low productivity compared to local farmers and failure to fulfill contractual agreements. Represents broader patterns of land appropriation affecting indigenous communities in Oromia."
             },
             {
-                name: "Bedesa Potash Mine",
-                coords: [11.2, 40.3],
-                type: "mining",
-                resource: "Potash",
-                status: "Development",
-                operator: "Allana Potash Corp",
-                yearStarted: 2014,
-                description: "Potash mining project in Afar Depression"
-            },
-            {
-                name: "Forced Gambella Resettlement",
+                name: "Gambella Resettlement Program",
                 coords: [7.9, 34.2],
                 type: "agriculture",
                 resource: "Land",
                 status: "Complete",
-                operator: "The federal government (EPRDF)",
+                operator: "Federal Government (EPRDF)",
                 yearStarted: 2012,
-                description: "Villagzation program and involuntary transfer of Gambella-ethnic peoples. The government spewed narratives of unproductive and unterutilized land, despite active Gambella communities persisting."
-            },
-            {
-                name: "Kenticha Tantalum Mine",
-                coords: [5.4, 39.2],
-                type: "mining",
-                resource: "Tantalum",
-                status: "Active",
-                operator: "Ethiopian Mineral Development Share Company",
-                yearStarted: 2009,
-                description: "Tantalum mining for electronics industry"
+                description: "Forced villagization program involving involuntary transfer of Gambella ethnic peoples. Government narratives claimed land was unproductive and underutilized, despite active indigenous communities with sustainable land management practices."
             },
             {
                 name: "Adola Gold Prospect",
                 coords: [5.9, 39.2],
                 type: "mining",
                 resource: "Gold",
-                status: "Government funds gold exploration and excavation projects",
-                operator: "Federal government subcontracted various junior mining companies",
+                status: "Active",
+                operator: "Federal government with subcontracted junior mining companies",
                 yearStarted: 2018,
-                description: "While supported and subsidized by the government, very few environmental protections exist. Contamination of mercury, cyanide, and other toxic chemical leaks have led to a high number of health complications and birth defects"
+                description: "Government-funded gold exploration and excavation projects with minimal environmental protections. Contamination from mercury, cyanide, and other toxic chemicals has led to significant health complications and birth defects in surrounding communities."
             }
         ];
 
@@ -190,8 +168,8 @@ margin: 0;
         function getMarkerColor(type) {
             switch(type) {
                 case 'mining': return '#8b4513'; // Brown for mining
-                case 'oil': return '#000000'; // Black for oil
-                case 'agriculture': return '#228b22'; // Green for agriculture
+                case 'oil': return '#000000'; // Black for oil/gas
+                case 'agriculture': return '#228b22'; // Green for agriculture/land
                 default: return '#ff6b35'; // Orange default
             }
         }
@@ -199,46 +177,51 @@ margin: 0;
         // Function to create custom markers
         function createResourceMarker(site) {
             var color = getMarkerColor(site.type);
-           
+            
             return L.circleMarker(site.coords, {
-                radius: 8,
+                radius: 10,
                 fillColor: color,
                 color: '#fff',
-                weight: 2,
+                weight: 3,
                 opacity: 1,
                 fillOpacity: 0.8
             });
         }
 
-        // Add resource sites to map
-        var resourceLayer = L.layerGroup();
+        // Create layer groups
+        var allResourcesLayer = L.layerGroup();
         var miningLayer = L.layerGroup();
+        var oilLayer = L.layerGroup();
         var agricultureLayer = L.layerGroup();
 
+        // Add resource sites to map
         resourceSites.forEach(function(site) {
             var marker = createResourceMarker(site);
-           
+            
             // Create popup content
             var popupContent = `
-                <div style="min-width: 200px; font-family: Georgia, serif;">
-                    <h4 style="margin: 0 0 10px 0; color: ${getMarkerColor(site.type)}; font-family: Georgia, serif;">${site.name}</h4>
+                <div style="min-width: 250px; max-width: 350px; font-family: Georgia, serif;">
+                    <h4 style="margin: 0 0 12px 0; color: ${getMarkerColor(site.type)}; border-bottom: 2px solid ${getMarkerColor(site.type)}; padding-bottom: 8px;">${site.name}</h4>
                     <p><strong>Resource:</strong> ${site.resource}</p>
-                    <p><strong>Type:</strong> ${site.type.charAt(0).toUpperCase() + site.type.slice(1)}</p>
+                    <p><strong>Type:</strong> ${site.type.charAt(0).toUpperCase() + site.type.slice(1)} Extraction</p>
                     <p><strong>Status:</strong> ${site.status}</p>
                     <p><strong>Operator:</strong> ${site.operator}</p>
                     <p><strong>Year Started:</strong> ${site.yearStarted}</p>
-                    <p><strong>Description:</strong> ${site.description}</p>
-                    <p><strong>Coordinates:</strong> ${site.coords[0].toFixed(3)}, ${site.coords[1].toFixed(3)}</p>
+                    <p style="margin-top: 12px;"><strong>Description:</strong></p>
+                    <p style="font-size: 12px; line-height: 1.4;">${site.description}</p>
+                    <p style="font-size: 11px; color: #666; margin-top: 10px;"><strong>Coordinates:</strong> ${site.coords[0].toFixed(3)}°N, ${site.coords[1].toFixed(3)}°E</p>
                 </div>
             `;
-           
-            marker.bindPopup(popupContent);
-           
+            
+            marker.bindPopup(popupContent, {maxWidth: 400});
+            
             // Add to appropriate layers
-            resourceLayer.addLayer(marker);
-           
+            allResourcesLayer.addLayer(marker);
+            
             if (site.type === 'mining') {
                 miningLayer.addLayer(marker);
+            } else if (site.type === 'oil') {
+                oilLayer.addLayer(marker);
             } else if (site.type === 'agriculture') {
                 agricultureLayer.addLayer(marker);
             }
@@ -246,73 +229,84 @@ margin: 0;
 
         // Base maps
         var baseMaps = {
-            "OpenStreetMap": openStreetMap,
+            "OpenStreetMap": openStreetMap
         };
 
         // Overlay maps
-        var overLays = {
-            "All Resource Sites": resourceLayer,
+        var overlayMaps = {
+            "All Resource Sites": allResourcesLayer,
             "Mining Sites": miningLayer,
-            "Agricultural Sites": agricultureLayer
+            "Oil/Gas Sites": oilLayer,
+            "Agricultural/Land Sites": agricultureLayer
         };
-
-        // Add layer control
-        L.control.layers(baseMaps, overLays, {collapsed: false}).addTo(map);
 
         // Add default layers
         openStreetMap.addTo(map);
-        resourceLayer.addTo(map);
+        allResourcesLayer.addTo(map);
+
+        // Add layer control
+        L.control.layers(baseMaps, overlayMaps, {
+            collapsed: false,
+            position: 'topright'
+        }).addTo(map);
 
         // Add custom legend
         var legend = L.control({position: 'bottomright'});
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
             div.innerHTML = `
-                <h4 style="margin: 0 0 10px 0;">Resource Types</h4>
+                <h4>Resource Extraction Types</h4>
                 <div class="legend-item">
                     <span class="legend-color" style="background-color: #8b4513;"></span>
-                    Mining Sites
-                </div>
-                <div class="legend-item">
-                    <span class="legend-color" style="background-color: #228b22;"></span>
-                    Agricultural Sites
+                    <span>Mining Operations</span>
                 </div>
                 <div class="legend-item">
                     <span class="legend-color" style="background-color: #000000;"></span>
-                    Oil/Gas Sites
+                    <span>Oil/Gas Extraction</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background-color: #228b22;"></span>
+                    <span>Agricultural/Land Appropriation</span>
                 </div>
             `;
             return div;
         };
         legend.addTo(map);
 
-        // Add geocoder search
-        var geocoder = L.Control.geocoder({
-            defaultMarkGeocode: false,
-            collapsed: true,
-            position: 'topleft',
-            placeholder: 'Search Ethiopia...'
-        }).addTo(map);
+        // Add geocoder search (with error handling)
+        try {
+            var geocoder = L.Control.geocoder({
+                defaultMarkGeocode: false,
+                collapsed: true,
+                position: 'topleft',
+                placeholder: 'Search locations in Ethiopia...',
+                errorMessage: 'Location not found'
+            }).addTo(map);
 
-        geocoder.on('markgeocode', function(e) {
-            var bbox = e.geocode.bbox;
-            var poly = L.polygon([
-                bbox.getSouthEast(),
-                bbox.getNorthEast(),
-                bbox.getNorthWest(),
-                bbox.getSouthWest()
-            ]);
-            map.fitBounds(poly.getBounds());
-            var latlng = poly.getBounds().getCenter();
-            var popup = L.popup()
-                .setContent("<b>Search Result:</b><br>" + e.geocode.name)
-                .setLatLng(latlng)
-                .openOn(map);
-        });
+            geocoder.on('markgeocode', function(e) {
+                var latlng = e.geocode.center;
+                map.setView(latlng, 10);
+                
+                L.popup()
+                    .setContent("<b>Search Result:</b><br>" + e.geocode.name)
+                    .setLatLng(latlng)
+                    .openOn(map);
+            });
+        } catch (error) {
+            console.log("Geocoder not available, continuing without search functionality");
+        }
 
         // Add scale control
-        L.control.scale().addTo(map);
+        L.control.scale({
+            position: 'bottomleft',
+            metric: true,
+            imperial: false
+        }).addTo(map);
 
+        // Add attribution
+        map.attributionControl.addAttribution('Research by Hosaena Tilahun');
+
+        console.log("Map initialized successfully with", resourceSites.length, "resource extraction sites");
     </script>
 </body>
 </html>
